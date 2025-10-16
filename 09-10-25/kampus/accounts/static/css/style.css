@@ -1,0 +1,26 @@
+body {
+  font-family: "Inter", "Segoe UI", sans-serif;
+}
+
+.navbar-brand {
+  letter-spacing: 0.5px;
+}
+
+.nav-link {
+  color: rgba(255, 255, 255, 0.85) !important;
+  transition: 0.2s;
+}
+
+.nav-link:hover {
+  color: #fff !important;
+  text-decoration: underline;
+}
+
+.dropdown-menu {
+  border-radius: 0.5rem;
+  box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.1);
+}
+
+footer {
+  font-size: 0.9rem;
+}

@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Login - Kampus{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-5">
+        <div class ="card shadow-sm-border-0 rounded-3">
+            <div class="card-body p-4">
+                <h1 class="h4 mb-3"></h1>
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form=label">Username</label>
+                        <input type="text" name = "Username" class="form-control" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form=label">Password</label>
+                        <input type="password" name = "password" class="form-control" required />
+                    </div>
+                    <button class = "btn btn-primary w-100">Login</button>
+
+                </form>
+            </div>
+        </div>
+        <p class="text-center text-muted mt-3 small">
+            Pakai akun yang sudah ada ya, kalo belum daftar dari admin django
+        </p>
+    </div>
+</div>
+
+{% endblock %}
