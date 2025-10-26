@@ -1,0 +1,8 @@
+<div>
+    Edit Data Buku : <br>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" value="Submit">Simpan</button>
+    </form>
+</div>

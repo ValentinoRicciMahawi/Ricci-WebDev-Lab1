@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Buku Tabungan</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            transition: background-color 0.3s;
+        }
+        .btn:hover {
+            background-color: #45a049;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+            color: #333;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        .action-btn {
+            display: inline-block;
+            padding: 6px 12px;
+            margin: 0 2px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 14px;
+            transition: opacity 0.3s;
+        }
+        .action-btn:hover {
+            opacity: 0.8;
+        }
+        .btn-detail {
+            background-color: #2196F3;
+            color: white;
+        }
+        .btn-edit {
+            background-color: #ff9800;
+            color: white;
+        }
+        .btn-delete {
+            background-color: #f44336;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Daftar Buku Tabungan</h1>
+        
+        <a href="{% url 'tabungan:create_buku' %}" class="btn">+ Tambah Buku Tabungan</a>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Nama Nasabah</th>
+                    <th>Kantor Bank</th>
+                    <th>Nomor Rekening</th>
+                    <th>Alamat</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for buku in list_buku %}
+                <tr>
+                    <td>{{ buku.nama_nasabah }}</td>
+                    <td>{{ buku.kantor_bank }}</td>
+                    <td>{{ buku.nomor_rekening }}</td>
+                    <td>{{ buku.alamat }}</td>
+                    <td>
+                        <a href="{% url 'tabungan:detail_buku' buku.id %}" class="action-btn btn-detail">Detail</a>
+                        <a href="{% url 'tabungan:update_buku' buku.id %}" class="action-btn btn-edit">Edit</a>
+                        <a href="{% url 'tabungan:delete_buku' buku.id %}" class="action-btn btn-delete">Hapus</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

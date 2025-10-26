@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail Buku Tabungan - {{ buku.nama_nasabah }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #eee;
+        }
+        .header h1 {
+            margin: 0;
+            color: #333;
+        }
+        .saldo-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .saldo-box h2 {
+            margin: 0 0 5px 0;
+            font-size: 14px;
+            font-weight: normal;
+            opacity: 0.9;
+        }
+        .saldo-box .amount {
+            font-size: 32px;
+            font-weight: bold;
+            margin: 0;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 20px 0;
+            transition: background-color 0.3s;
+        }
+        .btn:hover {
+            background-color: #45a049;
+        }
+        .btn-back {
+            background-color: #666;
+        }
+        .btn-back:hover {
+            background-color: #555;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+            color: #333;
+        }
+        .kredit {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+        .debit {
+            color: #f44336;
+            font-weight: bold;
+        }
+        .info-box {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .info-box p {
+            margin: 5px 0;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>{{ buku.nama_nasabah }}</h1>
+            <div class="saldo-box">
+                <h2>Total Saldo</h2>
+                <p class="amount">Rp {{ saldo|floatformat:0 }}</p>
+            </div>
+        </div>
+
+        <div class="info-box">
+            <p><strong>Kantor Bank:</strong> {{ buku.kantor_bank }}</p>
+            <p><strong>Nomor Rekening:</strong> {{ buku.nomor_rekening }}</p>
+            <p><strong>Alamat:</strong> {{ buku.alamat }}</p>
+        </div>
+
+        <a href="{% url 'tabungan:create_transaksi' buku.id %}" class="btn">+ Tambah Transaksi</a>
+        <a href="{% url 'tabungan:list_buku' %}" class="btn btn-back">Kembali</a>
+
+        <h2>Riwayat Transaksi</h2>
+        
+        {% if transaksi_list %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Tanggal</th>
+                    <th>Nominal</th>
+                    <th>Jenis</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for transaksi in transaksi_list %}
+                <tr>
+                    <td>{{ transaksi.tanggal|date:"d F Y H:i" }}</td>
+                    <td>Rp {{ transaksi.nominal|floatformat:0 }}</td>
+                    <td>
+                        <span class="{% if transaksi.jenis == 'KREDIT' %}kredit{% else %}debit{% endif %}">
+                            {{ transaksi.jenis }}
+                        </span>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="empty-state">
+            <p>Belum ada transaksi</p>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

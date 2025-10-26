@@ -1,0 +1,12 @@
+<div>
+    Nama: {{obj.nama_nasabah}} <br>
+    No Rekening: {{obj.nomor_rekening}} <br>
+    Alamat: {{obj.alamat}} <br>
+    Kantor: {{obj.kantor_bank}} <br>
+    <form method="POST">
+        {% csrf_token %}
+        Are you want to delete this item?<br><br>
+        <input type="submit" value="Yes, Delete" />&nbsp
+        <a href="/tabungan/">No, Cancel</a>
+    </form>
+</div>
