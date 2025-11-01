@@ -8,6 +8,9 @@ class Buku(models.Model):
     nama_nasabah = models.CharField(max_length=100)
     alamat = models.CharField(max_length=200)
 
+    class Meta:
+        db_table = 'tabungan_buku'
+
     def __str__(self) -> str:
         return self.nama_nasabah
     
@@ -35,7 +38,20 @@ class Transaksi(models.Model):
     jenis = models.CharField(max_length=10, choices=JENIS_CHOICES)
     
     class Meta:
+        db_table = 'tabungan_transaksi'
         ordering = ['-tanggal']  # Urutkan dari yang terbaru
     
     def __str__(self):
         return f"{self.jenis} - {self.nominal} ({self.tanggal.strftime('%d %B %Y')})"
+    
+class Catatan(models.Model):
+    judul = models.CharField(max_length=100)
+    isi = models.TextField()
+    tanggal = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        db_table = 'tabungan_catatan'
+        ordering = ['-tanggal']
+    
+    def __str__(self):
+        return self.judul
