@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Detail Berita</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 20px auto;
+      background: #f5f5f5;
+      padding: 20px;
+    }
+    .loading {
+      text-align: center;
+      color: #666;
+    }
+    img {
+      max-width: 100%;
+      margin: 15px 0;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <a href="{% url 'berita_list' %}" style="text-decoration:none; color:#0066cc;">← Kembali ke Daftar</a>
+  <div id="detail-container">
+    <div class="loading">Memuat berita...</div>
+  </div>
+
+  <script>
+    // ✅ 1️⃣ Dapatkan ID berita dari URL saat ini
+    const pathParts = window.location.pathname.split("/").filter(Boolean);
+    const beritaId = pathParts[pathParts.length - 1]; // ambil angka terakhir di /berita/1/
+
+    console.log("Berita ID:", beritaId); // debug ID-nya
+
+    // ✅ 2️⃣ Pastikan ID valid
+    if (!beritaId || isNaN(beritaId)) {
+      document.getElementById("detail-container").innerHTML =
+        "<p>URL tidak valid. Tidak ada ID berita.</p>";
+      throw new Error("Invalid berita ID");
+    }
+
+    // ✅ 3️⃣ Fetch data dari API
+    const apiUrl = `http://127.0.0.1:8000/api/berita/${beritaId}/`;
+    console.log("Fetching from:", apiUrl);
+
+    fetch(apiUrl)
+      .then((response) => {
+        console.log("Status:", response.status);
+        if (!response.ok) {
+          throw new Error(`HTTP Error: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Data detail:", data);
+
+        const container = document.getElementById("detail-container");
+        container.innerHTML = `
+          <h1>${data.judul}</h1>
+          <p><strong>Tanggal:</strong> ${new Date(data.tanggal).toLocaleDateString("id-ID")}</p>
+          ${data.gambar ? `<img src="${data.gambar}" alt="${data.judul}">` : ""}
+          <p>${data.isi_berita}</p>
+          <hr>
+          <h2>Komentar (${data.komentar?.length || 0})</h2>
+          ${
+            data.komentar && data.komentar.length > 0
+              ? data.komentar
+                  .map(
+                    (k) => `
+              <div style="margin-bottom:10px;padding:10px;border-left:3px solid #ddd;">
+                <strong>${k.nama}</strong>
+                <span style="color:#888;"> (${new Date(k.tanggal).toLocaleString("id-ID")})</span>
+                <p>${k.isi_komentar}</p>
+              </div>`
+                  )
+                  .join("")
+              : "<p>Belum ada komentar.</p>"
+          }
+        `;
+      })
+      .catch((error) => {
+        console.error("❌ Error fetching detail:", error);
+        document.getElementById("detail-container").innerHTML =
+          `<p style="color:red;">Gagal memuat detail berita: ${error.message}</p>`;
+      });
+  </script>
+</body>
+</html>
